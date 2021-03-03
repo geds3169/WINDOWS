@@ -37,7 +37,7 @@ $Domain = (Get-ADDomain).DNSRoot
 
 #Import du fichier CSV a traiter et pour chaque objet
 
-Import-CSV "C:\account.csv" -Delimiter ";" | ForEach ($User in $ADUsers)
+Import-CSV "C:\account.csv" -Delimiter ";" | ForEach-Object
 
 {
 
@@ -55,7 +55,7 @@ $login = $firstname.Substring(0,1)+"."+$lastname.ToUpper()
 $OU = $_.OU #OU pour chaque utilisateurs
 
 # Variable Complémentaires
-$UPN = $login+"@"$Domain # permettra en cas de besoin par la suite de créer automatiquement le champ mail de l'utilisateur
+$UPN = $login+"@"+$Domain # permettra en cas de besoin par la suite de créer automatiquement le champ mail de l'utilisateur
 
 $Password = ConvertTo-SecureString -AsPlainText $RawPassword -Force # Gestion des mots de passe en clair
 

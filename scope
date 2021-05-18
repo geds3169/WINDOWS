@@ -1,0 +1,46 @@
+# Import PowerShell Module
+Import-Module -Name 'DHCPServer'
+
+# Create VLAN10 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 10' -StartRange '192.168.10.1' -EndRange '192.168.10.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN10'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.10.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan10" -Router '192.168.10.254'
+
+# Create VLAN20 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 20' -StartRange '192.168.20.1' -EndRange '192.168.20.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN20'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.20.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan10" -Router '192.168.20.254'
+
+# Create VLAN30 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 30' -StartRange '192.168.30.1' -EndRange '192.168.30.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN30'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.30.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan10" -Router '192.168.30.254'
+
+# Create VLAN40 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 40' -StartRange '192.168.40.1' -EndRange '192.168.40.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN40'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.40.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan40" -Router '192.168.40.254'
+
+# Create VLAN50 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 50' -StartRange '192.168.50.1' -EndRange '192.168.50.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN50'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.50.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan50" -Router '192.168.50.254'
+
+# Create VLAN60 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 60' -StartRange '192.168.60.1' -EndRange '192.168.60.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN60'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.60.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan60" -Router '192.168.50.254'
+
+# Create VLAN70 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 70' -StartRange '192.168.70.1' -EndRange '192.168.70.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN70'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.70.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan70" -Router '192.168.70.254'
+
+# Create VLAN80 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 80' -StartRange '192.168.80.1' -EndRange '192.168.80.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN80'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.80.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan80" -Router '192.168.80.254'
+
+# Create VLAN90 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 90' -StartRange '192.168.90.1' -EndRange '192.168.90.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN90'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.90.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan90" -Router '192.168.90.254'
+
+# Create VLAN100 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 100' -StartRange '192.168.100.1' -EndRange '192.168.100.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN100'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.100.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan100" -Router '192.168.100.254'
+
+# Create VLAN110 DHCP Scope
+Add-DhcpServerv4Scope -Name 'VLAN 110' -StartRange '192.168.110.1' -EndRange '192.168.110.253' -SubnetMask '255.255.255.0' -Description 'DHCP Pool for VLAN110'
+Set-DhcpServerv4OptionValue -ScopeId '192.168.110.0' -DnsServer '192.168.30.1' -DnsDomain "lan_vlan110" -Router '192.168.110.254'

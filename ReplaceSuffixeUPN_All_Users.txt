@@ -1,0 +1,35 @@
+﻿$oldSuffix = "@scassi.lan"
+$newSuffix = "@geds.web-connectivity.fr"
+
+
+# Check si un suffixe UPN existe dans l'AD.
+Get-ADForest | Format-List UPNSuffixes
+
+# Si le suffixe UPN est inexistant ancer la commande dans une autre console, pour en ajouter un
+# Get-ADForest | Set-ADForest -UPNSuffixes @{add= $newSuffix }
+
+
+
+#Vérification des comptes utilisateurs avant modification du suffixe UPN
+Write-Host "Vérification des comptes utilisateurs local avant modification" -ForegroundColor Green
+
+#Sort la liste des utilisateurs
+Get-ADUser -Filter * | Sort-Object Name | Format-Table Name, UserPrincipalName
+
+#Demande une confirmation avant de continuer le script
+Read-Host -Prompt "Presser une touche pour continuer ou CTRL+C pour quitter l'execution du script"
+
+
+#Modifie le suffixe UPN de chaque utilisateur
+Get-ADUser -Filter * | % {
+$Name=$_.samaccountname 
+$UPN=$Name+$newSuffix
+Set-ADUser $_.samaccountname -UserPrincipalName $Upn
+}
+
+
+#Vérification des comptes utilisateurs après modification du suffixe UPN
+Write-Host "Vérification de la modification apporté aux comptes utilisateurs local" -ForegroundColor Cyan
+
+#Sort la liste des utilisateurs
+Get-ADUser -Filter * | Sort-Object Name | Format-Table Name, UserPrincipalName

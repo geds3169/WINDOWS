@@ -1,0 +1,4 @@
+﻿
+Import-Module ActiveDirectory
+
+Get-ADUser -Filter {(SamAccountName -Like "*") -and (UserprincipalName -notlike "*.*@*")} -SearchBase "OU=scassi,DC=scassi,DC=lan" | Foreach-Object {Set-ADUser $_ -SamAccountName ($_.givenname.substring(0,1) + $_.surname).tolower() -UserPrincipalName (($_.givenname + '.' + $_.surname).tolower() + "@" + "geds.web-connectivity.fr")}

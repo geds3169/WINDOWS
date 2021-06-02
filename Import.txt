@@ -1,0 +1,51 @@
+﻿# On importe le module Active Directory
+Import-Module ActiveDirectory
+
+# On utilise le module d'import CSV
+$file = Import-Csv -Delimiter ";" -Path C:\Temp\ADuser.csv
+
+# Boucle ForEach
+ForEach ($User in $file)
+{
+    $MailAddress = $User.MailAddress
+    $GivenName = $User.GivenName
+    $Surname = $User.Surname
+    $DisplayName = $User.DisplayName
+    $SamAccountName = $User.SamAccountName
+    $UserPrincipalName = $User.UserPrincipalName
+    $JobTitle = $User.JobTitle
+    $Department = $User.Department
+    $OfficeNumber = $User.OfficeNumber
+    $MobilePhone = $User.MobilePhone
+    $Fax = $User.Fax
+    $Addresses = $User.Addresses
+    $City = $User.City
+    $StateorProvince = $User.StateorProvince
+    $ZiporPostal = $User.ZiporPostal
+    $CountryOrRegion = $User.CountryOrRegion
+    $OU = $User.OU
+    $Password = $User.Password
+    
+    # Check si l'utilisateur existe déjà dans le domaine
+    if (Get-ADuser -F {SamAccountName -eq "$SamAccountName"})
+    {
+    
+        # Message
+        Write-Warning "L'user existe déjà dans l'AD"
+
+    }
+    else
+    { 
+        # S'il n'existe pas on le créer
+        New-ADUser `
+            -SamAccountName $SamAccountName `
+            -UserPrincipalName "$UserPrincipalName" `
+            -Name "$DisplayName" `
+            -GivenName $GivenName `
+            -Surname $Surname `
+            -Enabled $True `
+            -DisplayName "$DisplayName" `
+            -Path $OU `
+            -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force)
+    }
+}

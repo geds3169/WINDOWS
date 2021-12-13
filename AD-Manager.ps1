@@ -29,6 +29,7 @@ function Get-Menu
     Write-Host "4: Press '4' Configure Active Directory Domain. "
     Write-Host "5: Press '5' Configure DNS forwarder. "
     Write-Host "6: Press '6' Import Users and create OU. "
+    Write-Host "7: Press '7' Check Users inactive. "
     Write-Host "Q: Press 'Q' to quit."
     Write-Host ""
     $selection = Read-Host "Please make a selection"
@@ -40,6 +41,7 @@ function Get-Menu
     4{Get-conf}
     5{Get-DnsForward}
     6{Get-SubMenu}
+    7{Get-InactiveUsers}
     }
     
 }
@@ -177,7 +179,7 @@ Function Get-AD {
     {
         $FeatureList = @("RSAT-AD-Tools","AD-Domain-Services")
 
-        Write-Host "DNS is not installed, is normal, the service will be installed in the next time when you promote the controller" -ForegroundColor Cyan
+        Write-Host "DNS is not installed, is normal, the service will be installed in the next time when you promote the controller" -ForegroundColor Cyan -NoNewline;
 
         ForEach ($Feature in $FeatureList)
         {
@@ -195,7 +197,7 @@ Function Get-AD {
                     Add-WindowsFeature -Name $Feature -IncludeManagementTools -IncludeAllSubFeature
                     Write-Output "$Feature installation is successfull"
                     Start-Sleep -Seconds 2
-                    Write-Host "The domain controller must be promoted and configured, choice 4" -ForegroundColor Green
+                    Write-Host "The domain controller must be promoted and configured, choice 4" -ForegroundColor Green -NoNewline;
                     Get-Menu 
                }
 
@@ -439,6 +441,20 @@ Function Get-GUI {
                Get-Menu       
             }
     }
+}
+
+Function Get-InactiveUsers {
+
+Read-Host "This option only retrieves active accounts, not deactivated accounts " -ForegroundColor Cyan -NoNewline;
+
+$Duration = Read-Host "Enter the duration in day "
+$OU = Read-Host "Enter the name of the specific OU where the search should be performed (avoid errors with built-in accounts) "
+
+$InactivesObjects = Search-ADaccount -AccountInactive -Timespan $Duration | Where{ ($_.DistinguishedName -notmatch "CN=$OU") -and ($_.Enabled -eq $true) } | foreach
+        {
+            if(($_.objectClass -eq "user") -and (Get-ADUser -Filter "Name -eq '$($_.Name)'" -Properties WhenCreated).WhenCreated -lt (Get-Date).AddDays(-7)){ $_ }
+            if(($_.objectClass -eq "computer") -and (Get-ADComputer -Filter "Name -eq '$($_.Name)'" -Properties WhenCreated).WhenCreated -lt (Get-Date).AddDays(-7)){ $_ }
+        }
 }
 
 

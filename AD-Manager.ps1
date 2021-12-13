@@ -27,7 +27,7 @@ function Get-Menu
     Write-Host "2: Press '2' Configure network."
     Write-Host "3: Press '3' Install Active Directory Domain Services role and features."
     Write-Host "4: Press '4' Configure Active Directory Domain. "
-    Write-Host "5: Press '5' Configure Dns Forwarder
+    Write-Host "5: Press '5' Configure Dns Forwarder. "
     Write-Host "6: Press '6' Import Users and create OU. "
     Write-Host "Q: Press 'Q' to quit."
     Write-Host ""

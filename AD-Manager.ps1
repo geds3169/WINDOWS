@@ -27,7 +27,8 @@ function Get-Menu
     Write-Host "2: Press '2' Configure network."
     Write-Host "3: Press '3' Install Active Directory Domain Services role and features."
     Write-Host "4: Press '4' Configure Active Directory Domain. "
-    Write-Host "5: Press '5' Import Users and create OU. "
+    Write-Host "5: Press '5' Configure Dns Forwarder
+    Write-Host "6: Press '6' Import Users and create OU. "
     Write-Host "Q: Press 'Q' to quit."
     Write-Host ""
     $selection = Read-Host "Please make a selection"
@@ -37,7 +38,8 @@ function Get-Menu
     2{Get-IP}
     3{Get-AD}
     4{Get-conf}
-    5{Get-SubMenu}
+    5{Get-DnsForward}
+    6{Get-SubMenu}
     }
     
 }
@@ -164,12 +166,8 @@ Function Get-IP {
             Write-Host "Operation canceled"
             Get-Menu       
         }
-
-
     }
-
 }
-
 
 #Functions  Install role en feature
 Function Get-AD {
@@ -257,8 +255,26 @@ $ForestMode = Read-Host "Enter the level of the forest like 3 to 7 same of the f
     }
 }
 
+Function Get-DnsForward {
+    Process
+    {
+        $confirmation = Read-Host "Do you want to enter a DNS forwarder ? [y/n] "
+        If ($confirmation -eq 'y')
+        {
+            $forwarder = Read-Host "Enter the resolver's IP address"
+            Set-DnsServerForwarder -IPAddress "$forwarder" -PassTrhu
+            $DNSforwarder = Get-DnsServerForwarder
+            Write-Host "Dns Server Forwarder success created"
+        }
+        
+        Else
+        {
+        Write-Host "Write-Host "Operation canceled"
+        Get-Menu
+        }
+    }
 
-
+}
 
 Function Get-Core {
     process

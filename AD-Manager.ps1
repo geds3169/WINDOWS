@@ -176,41 +176,52 @@ Function Get-AD {
 
     process
     {
-        $FeatureList = @("RSAT-AD-Tools","AD-Domain-Services","DNS")
+        $FeatureList = @("RSAT-AD-Tools","AD-Domain-Services")
 
-        Foreach($Feature in $FeatureList)
+        Write-Host "DNS is not installed, is normal, the service will be installed in the next time when you promote the controller" -ForegroundColor Cyan
+
+        ForEach ($Feature in $FeatureList)
         {
 
-           if(((Get-WindowsFeature-Name $Feature).InstallState)-eq"Available")
-           {
-             Write-Host "Feature $Feature will be installed now !"
+            if(((Get-WindowsFeature $Feature).InstallState) -eq "Available")
+            {
+                Write-Host "$Feature will be installed now"
+            }
 
-             Try
-             {
-                $confirmation = Read-Host "Do you want to install the role and features ? :"
-                if ($confirmation -eq 'y')
-                {
-                    Add-WindowsFeature-Name $Feature-IncludeManagementTools -IncludeAllSubFeature
-                    Write-Host "$Feature : Installation is a success !"
-                }
-                else
-                {
+            Try
+            {
+                $Nconfirmation = Read-Host "$Feature is not present, did you want install it ? [y/n]  "
+                If ($Nconfirmation -eq 'y')
+               {
+                    Add-WindowsFeature -Name $Feature -IncludeManagementTools -IncludeAllSubFeature
+                    Write-Output "$Feature installation is successfull"
+                    Start-Sleep -Seconds 2
+                    Write-Host "The domain controller must be promoted and configured, choice 4" -ForegroundColor Green
+                    Get-Menu 
+               }
+
+               else
+               {
                     Write-Host "Operation canceled"
-                    Get-Menu
-                }
-             }
+                    Get-Menu                      
+               }
 
-             Catch
-             {
-                Write-Host "$Feature : Error during installation !"
+            }
+
+            Catch
+            {
+                Write-Host "An error has been encounterred"
                 Get-Menu
-             }
-           }
+            }
+
         }
-   }
+    }
 }
 
+
 Function Get-conf {
+
+Import-Module ADDSDeployment
 
 Write-Host "Define the functional level of the active directory (like 3 to 7)"
 Write-Host "Windows Server 2008: 3 : 3"
@@ -229,8 +240,8 @@ $ForestMode = Read-Host "Enter the level of the forest like 3 to 7 same of the f
             -CreateDnsDelegation:$false `
             -DatabasePath “C:\Windows\NTDS” `
             -DomainMode “$level” `
-            -DomainName “yourdomain.com” `
-            -DomainNetbiosName “YOURDOMAIN” `
+            -DomainName “$DomainName” `
+            -DomainNetbiosName “$DomainName” `
             -ForestMode “Win2012R2” `
             -InstallDns:$true `
             -LogPath “C:\Windows\NTDS” `

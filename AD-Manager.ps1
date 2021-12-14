@@ -9,9 +9,6 @@ Write-Host "  \|               "
 Write-Host "                   "
 Write-Host "     08/12/2021    "
 
-#Prevent execution: variables contaning accented characters break, display strings too.
-$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
-
 #Functions Menu
 function Get-Menu
 {
@@ -117,55 +114,55 @@ Function Get-IP {
         $confirmation = Read-Host "Do you want reconfigure this adapter ? [y/n] "
         If ($confirmation -eq 'y')
         {
-            $IP = Read-Host "Enter the desired IP address "
-            $CIDR = Read-Host "Enter the CIDR "
-            $Gateway = Read-Host "Enter the Gateway "
-            $DNS = Read-Host "Enter the desired DNS IP (Like 127.0.0.1 for a ADDS Server) "
+		$IP = Read-Host "Enter the desired IP address "
+		$CIDR = Read-Host "Enter the CIDR "
+            	$Gateway = Read-Host "Enter the Gateway "
+            	$DNS = Read-Host "Enter the desired DNS IP (Like 127.0.0.1 for a ADDS Server) "
 
-            #Disable DHCP
-            Set-NetIPInterface -InterfaceIndex "$adapter" -Dhcp Disabled
+           	#Disable DHCP
+            	Set-NetIPInterface -InterfaceIndex "$adapter" -Dhcp Disabled
 
-            #Turn off adapter and turn on
-            Disable-NetAdapter -Name "$adapterName"
-            Enable-NetAdapter -Name "$adapterName"
+            	#Turn off adapter and turn on
+            	Disable-NetAdapter -Name "$adapterName"
+            	Enable-NetAdapter -Name "$adapterName"
 
-            #Remove Config
-            Get-NetAdapter | Remove-NetIPAddress -AddressFamily IPv4 -Confirm:$false
-            Get-NetAdapter | Remove-NetRoute -AddressFamily IPv4 -Confirm:$false
+            	#Remove Config
+            	Get-NetAdapter | Remove-NetIPAddress -AddressFamily IPv4 -Confirm:$false
+            	Get-NetAdapter | Remove-NetRoute -AddressFamily IPv4 -Confirm:$false
 
-            #New address & Mask & Gateway
-            Get-NetAdapter -InterfaceIndex "$adapter" | New-NetIPAddress `
-                -AddressFamily IPv4 `
-                -IPAddress $IP `
-                -PrefixLength $CIDR `
-                -DefaultGateway $Gateway
+            	#New address & Mask & Gateway
+            	Get-NetAdapter -InterfaceIndex "$adapter" | New-NetIPAddress `
+                	-AddressFamily IPv4 `
+                	-IPAddress $IP `
+                	-PrefixLength $CIDR `
+                	-DefaultGateway $Gateway
             
-            #New DNS server
-            Set-DnsClientServerAddress -InterfaceIndex "$adapter" -ServerAddresses "$DNS"
-            Start-Sleep -Seconds 5
-            Write-Host = "Modified configuration "
+            	#New DNS server
+            	Set-DnsClientServerAddress -InterfaceIndex "$adapter" -ServerAddresses "$DNS"
+            	Start-Sleep -Seconds 5
+            	Write-Host = "Modified configuration "
+	    	Write-Output $_
 
-           $Nconfirmation = Read-Host "Do you want disable IPv6 on this adapter ? [y/n]  "
-           If ($Nconfirmation -eq 'y')
-            {
-                Disable-NetAdapterBinding -Name "$AdapterName" -ComponentID ms_tcpip6
-                Get-NetAdapterBinding -Name "$AdapterName" -ComponentID ms_tcpip6
-                Write-Host "$output"
-                Get-Menu
-            }
+            	$Nconfirmation = Read-Host "Do you want disable IPv6 on this adapter ? [y/n]  "
+            	If ($Nconfirmation -eq 'y')
+             	{
+                 	Disable-NetAdapterBinding -Name "$AdapterName" -ComponentID ms_tcpip6
+			Get-NetAdapterBinding -Name "$AdapterName" -ComponentID ms_tcpip6
+                 	Write-Output $_
+                 	Get-Menu
+             	}
 
-            else
-            {
-              Write-Host "The script does not manage the IPv6 configuration, please do it manually"
-              Start-Sleep -Seconds 2
-              Get-Menu            
-            }
+             	else
+             	{
+               		Write-Host "The script does not manage the IPv6 configuration, please do it manually"
+               		Start-Sleep -Seconds 2
+               		Get-Menu            
+             	}
         }
-
         else
         {
-            Write-Host "Operation canceled"
-            Get-Menu       
+		Write-Host "Operation canceled"
+            	Get-Menu       
         }
     }
 }
@@ -176,37 +173,37 @@ Function Get-AD {
 
     process
     {
-        $FeatureList = @("RSAT-AD-Tools", "AD-Domain-Services")
+	$FeatureList = @("RSAT-AD-Tools", "AD-Domain-Services")
         Get-WindowsFeature -Name $FeatureList
 
         Foreach ($Feature in $FeatureList) 
         {
-
 	        If (((Get-WindowsFeature -Name $Feature).InstalState -Ne "Installed")) 
             {
 	            Write-Host "Feature $Feature is not installed"
-
+		    
 	            Try 
-                {
-		            $confirmation = Read-Host "RSAT and ADDS role are not installed did you want install it ? [y/n] "
+		    {
+		        $confirmation = Read-Host "RSAT and ADDS role are not installed did you want install it ? [y/n] "
         	        If ($confirmation -eq 'y')
                         {
                             Add-WindowsFeature -Name $Feature -IncludeManagementTools -IncludeAllSubfeature
-		                    Write-Host "$Feature installed successfully"
-                            Write-Host "Server need to be restarted"
+		            Write-Host "$Feature installed successfully" -ForegroundColor Green
+                            Write-Host "Server need to be restarted" -ForegroundColor Yellow
 		                    Start-Sleep -Seconds 10
                             Get-WindowsFeature -Name $FeatureList
                             restart-computer
                          }
-                    else
-                    {
-                        Write-Host "Operation canceled"
-                        Get-Menu
-                    }
+			 
+                    	else
+                    	{
+                        	Write-Host "Operation canceled"
+                        	Get-Menu
+                    	}
 	            }
 
 	            Catch
-                {
+		    {
                     Write-Host "An error occurred:"
                     Write-Output $_
                     Get-Menu
@@ -219,7 +216,6 @@ Function Get-AD {
                 Write-Host "Operation canceled"
                 Get-Menu
             }
-
         }
     }
 }

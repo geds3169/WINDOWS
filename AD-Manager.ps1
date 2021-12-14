@@ -236,9 +236,8 @@ $level = Read-Host "Enter the N° functional level of the active directory : "
 $DomainName = Read-Host "Enter the domain name : "
 $ForestMode = Read-Host "Enter the level of the forest like 3 to 7 same of the functional level : "
 
-
-$NetbiosName = ($DomaineName -split {$_ -eq "."})[0]
-$NetbiosNameSub = $NetbiosName.Substring(0,10)
+#Substring the fqdn to extract the NetBiosName = max 15 character
+$NetBiosName = ($DomainName.Split('.')[0]).substring(0,15)
 
     Try
     {

@@ -128,7 +128,7 @@ Function Get-IP {
 
             #Turn off adapter and turn on
             Disable-NetAdapter -Name "$adapterName"
-            Disable-NetAdapter -Name "$adapterName"
+            Enable-NetAdapter -Name "$adapterName"
 
             #Remove Config
             Get-NetAdapter | Remove-NetIPAddress -AddressFamily IPv4 -Confirm:$false

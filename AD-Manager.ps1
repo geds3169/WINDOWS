@@ -9,17 +9,13 @@ Write-Host "  \|               "
 Write-Host "                   "
 Write-Host "     08/12/2021    "
 
-#Modules
-#Import-Module PSWorkflow
-Import-Module activedirectory
-
 #Functions Menu
 function Get-Menu
 {
     param (
         [string]$Title = 'Manage AD'
     )
-    Clear-Host
+    #Clear-Host
     Write-Host "================ $Title ================"
     Write-Host ""
     Write-Host ""
@@ -81,7 +77,7 @@ function Get-Rename {
         {
             Rename-Computer -NewName "$input"
             Write-Host = "The server will restart"
-            Start-Sleep -Seconds 5
+            Start-Sleep -Seconds 2
             restart-computer
         }
 
@@ -177,42 +173,50 @@ Function Get-AD {
 
     process
     {
-        $FeatureList = @("RSAT-AD-Tools","AD-Domain-Services")
+        $FeatureList = @("RSAT-AD-Tools", "AD-Domain-Services")
+        Get-WindowsFeature -Name $FeatureList
 
-        Write-Host "DNS is not installed, is normal, the service will be installed in the next time when you promote the controller" -ForegroundColor Cyan
-
-        ForEach ($Feature in $FeatureList)
+        Foreach ($Feature in $FeatureList) 
         {
 
-            if(((Get-WindowsFeature $Feature).InstallState) -eq "Available")
+	        If (((Get-WindowsFeature -Name $Feature).InstalState -Ne "Installed")) 
             {
-                Write-Host "$Feature will be installed now"
+	            Write-Host "Feature $Feature is not installed"
+
+	            Try 
+                {
+		            $confirmation = Read-Host "RSAT and ADDS role are not installed did you want install it ? [y/n] "
+        	        If ($confirmation -eq 'y')
+                        {
+                            Add-WindowsFeature -Name $Feature -IncludeManagementTools -IncludeAllSubfeature
+		                    Write-Host "$Feature installed successfully"
+                            Write-Host "Server need to be restarted"
+		                    Start-Sleep -Seconds 10
+                            Get-WindowsFeature -Name $FeatureList
+                            restart-computer
+                         }
+                    else
+                    {
+                        Write-Host "Operation canceled"
+                        Get-Menu
+                    }
+	            }
+
+	            Catch
+                {
+                    Write-Host "An error occurred:"
+                    Write-Output $_
+                    Get-Menu
+	            }
+
             }
 
-            Try
+            else
             {
-                $Nconfirmation = Read-Host "$Feature is not present, did you want install it ? [y/n]  "
-                If ($Nconfirmation -eq 'y')
-               {
-                    Add-WindowsFeature -Name $Feature -IncludeManagementTools -IncludeAllSubFeature
-                    Write-Output "$Feature installation is successfull"
-                    Start-Sleep -Seconds 2
-                    Write-Host "The domain controller must be promoted and configured, choice 4" -ForegroundColor Green
-                    Get-Menu 
-               }
-
-               else
-               {
-                    Write-Host "Operation canceled"
-                    Get-Menu                      
-               }
-            }
-
-            Catch
-            {
-                Write-Host "An error has been encounterred"
+                Write-Host "Operation canceled"
                 Get-Menu
             }
+
         }
     }
 }

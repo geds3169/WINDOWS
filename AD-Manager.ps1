@@ -179,7 +179,7 @@ Function Get-AD {
     {
         $FeatureList = @("RSAT-AD-Tools","AD-Domain-Services")
 
-        Write-Host "DNS is not installed, is normal, the service will be installed in the next time when you promote the controller" -ForegroundColor Cyan -NoNewline;
+        Write-Host "DNS is not installed, is normal, the service will be installed in the next time when you promote the controller" -ForegroundColor Cyan
 
         ForEach ($Feature in $FeatureList)
         {
@@ -197,7 +197,7 @@ Function Get-AD {
                     Add-WindowsFeature -Name $Feature -IncludeManagementTools -IncludeAllSubFeature
                     Write-Output "$Feature installation is successfull"
                     Start-Sleep -Seconds 2
-                    Write-Host "The domain controller must be promoted and configured, choice 4" -ForegroundColor Green -NoNewline;
+                    Write-Host "The domain controller must be promoted and configured, choice 4" -ForegroundColor Green
                     Get-Menu 
                }
 
@@ -288,7 +288,7 @@ Function Get-Core {
        Import-Module activedirectory
 
        # Warning
-       Write-Host "Be careful, this script uses the SamAccountName@domainname to create the user's e-mail address (check that this matches your expectations (otherwise modify line 278 so that it corresponds to your e-mail column in the CSV)" -ForegroundColor Red -NoNewline;
+       Write-Host "Be careful, this script uses the SamAccountName@domainname to create the user's e-mail address (check that this matches your expectations (otherwise modify line 278 so that it corresponds to your e-mail column in the CSV)" -ForegroundColor Red
 
        #Retrieve the domain name
        $Domain = (Get-ADDomain).DNSRoot
@@ -445,7 +445,7 @@ Function Get-GUI {
 
 Function Get-InactiveUsers {
 
-Read-Host "This option only retrieves active accounts, not deactivated accounts " -ForegroundColor Cyan -NoNewline;
+Read-Host "This option only retrieves active accounts, not deactivated accounts " -ForegroundColor Cyan
 
 $Duration = Read-Host "Enter the duration in day "
 $OU = Read-Host "Enter the name of the specific OU where the search should be performed (avoid errors with built-in accounts) "

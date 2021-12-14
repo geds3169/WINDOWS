@@ -237,6 +237,10 @@ $level = Read-Host "Enter the N° functional level of the active directory : "
 $DomainName = Read-Host "Enter the domain name : "
 $ForestMode = Read-Host "Enter the level of the forest like 3 to 7 same of the functional level : "
 
+
+$NetbiosName = ($DomaineName -split {$_ -eq "."})[0]
+$NetbiosNameSub = $NetbiosName.Substring(0,10)
+
     Try
     {
         Install-ADDSForest `
@@ -244,7 +248,7 @@ $ForestMode = Read-Host "Enter the level of the forest like 3 to 7 same of the f
             -DatabasePath “C:\Windows\NTDS” `
             -DomainMode “$level” `
             -DomainName “$DomainName” `
-            -DomainNetbiosName “$DomainName” `
+            -DomainNetbiosName “$NetbiosNameSub” `
             -ForestMode “Win2012R2” `
             -InstallDns:$true `
             -LogPath “C:\Windows\NTDS” `

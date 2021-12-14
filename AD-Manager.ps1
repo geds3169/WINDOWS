@@ -9,6 +9,9 @@ Write-Host "  \|               "
 Write-Host "                   "
 Write-Host "     08/12/2021    "
 
+#Prevent execution: variables contaning accented characters break, display strings too.
+$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+
 #Functions Menu
 function Get-Menu
 {

@@ -174,7 +174,7 @@ Function Get-AD {
     {    
         $FeatureList = @("RSAT-AD-Tools", "AD-Domain-Services")
         Get-WindowsFeature -Name $FeatureList
-
+        $var =  False
         Foreach ($Feature in $FeatureList) 
         {
 
@@ -192,7 +192,7 @@ Function Get-AD {
                             Write-Host "Server need to be restart"
                             Get-WindowsFeature -Name $FeatureList
                             Start-Sleep -Seconds 10
-                            restart-computer
+                            $var = True
                          }
                     else
                     {
@@ -217,6 +217,7 @@ Function Get-AD {
             }
 
         }
+        if $var -eq true {restart-computer}
     }
 }
 

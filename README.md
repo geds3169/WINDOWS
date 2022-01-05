@@ -37,7 +37,8 @@ $PSDefaultParameterValues['Get-Content:Encoding'] = 'utf8'
 # AD-Manager.ps1
 #########################################
 
-Work perfectly but not finished for import users ces lignesFFo
+Works great for setting up a domain controller. It remains to add a workflow to restart the script automatically after each restart.  
+Still need to test user import.
 
 -----------------------------------------------------------------------------------------------------------------
 

@@ -34,15 +34,18 @@ $PSDefaultParameterValues['Get-Content:Encoding'] = 'utf8'
 
 -----------------------------------------------------------------------------------------------------------------
 #########################################
-# Create_AD.ps1
+# AD-Manager.ps1
 #########################################
+
+Work perfectly but not finished for import users ces lignesFFo
+
 -----------------------------------------------------------------------------------------------------------------
 
 #########################################
 # Create_AD.ps1
 #########################################
 
-Script non tester encore.
+Works perfectly for the installation of a domain controller, remains to test the import of users and add a workflow to simplify the return to the script in an automated way.
 
 -----------------------------------------------------------------------------------------------------------------
 

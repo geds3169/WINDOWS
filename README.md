@@ -22,6 +22,18 @@ If you are a French company and you appreciate my work, do not hesitate to conta
 
 # When you copy or download the powershell files, you must first execute two commands in order to avoid format errors and that they are executed in UTF8
 
+1- Open PowerShell ISE copy and paste this lines:
+
+$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
+$PSDefaultParameterValues['Get-Content:Encoding'] = 'utf8'
+
+2- Select "RAW":
+3- copy the contents of the script and paste it into PowerShell ISE;
+4- then save the file '.ps1';
+5- Execute the script.
+
+
+
 -----------------------------------------------------------------------------------------------------------------
 
 #########################################

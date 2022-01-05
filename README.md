@@ -24,12 +24,12 @@ If you are a French company and you appreciate my work, do not hesitate to conta
 
 1- Open PowerShell ISE copy and paste this lines:
 
-$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
-$PSDefaultParameterValues['Get-Content:Encoding'] = 'utf8'
+$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8' .
+$PSDefaultParameterValues['Get-Content:Encoding'] = 'utf8' .
 
 2- Select "RAW":
-3- copy the contents of the script and paste it into PowerShell ISE;
-4- then save the file '.ps1';
+3- copy the contents of the script and paste it into PowerShell ISE; .
+4- then save the file '.ps1'; .
 5- Execute the script.
 
 -----------------------------------------------------------------------------------------------------------------

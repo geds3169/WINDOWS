@@ -24,7 +24,7 @@ If you are a French company and you appreciate my work, do not hesitate to conta
 
 1- Open PowerShell ISE copy and paste this lines:
 
-$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
+$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'  
 $PSDefaultParameterValues['Get-Content:Encoding'] = 'utf8'
 
 2- Select "RAW":  
